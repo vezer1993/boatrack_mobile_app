@@ -1,0 +1,57 @@
+import 'dart:typed_data';
+import 'package:mime/mime.dart';
+import 'package:flutter/material.dart';
+import 'package:azblob/azblob.dart';
+
+String connectionString = "DefaultEndpointsProtocol=https;AccountName=boatrackstorage;AccountKey=Fo2O28zRO3LPnQJy2Cwp4C5vV3MULqT2n3Tdl5iCd9UdLG09zjWeAhePYVtQ+Qx9Ou3XKHvtwVlj+AStWz8TlA==;EndpointSuffix=core.windows.net";
+
+Future<String> uploadImageToAzure(BuildContext context, String fileName, Uint8List content) async {
+
+  String checkInOutContainer = "issues";
+  String path = "https://boatrackstorage.blob.core.windows.net/issues/";
+
+  try {
+    var storage = AzureStorage.parse(connectionString);
+    String? contentType = lookupMimeType(fileName);
+    String name = "${DateTime.now().millisecondsSinceEpoch}_$fileName";
+    await storage.putBlob('/$checkInOutContainer/$name', bodyBytes: content,
+      contentType: contentType,
+      type: BlobType.BlockBlob,);
+    return path + name;
+  } on AzureStorageException catch (ex) {
+    print(ex.message);
+  } catch (err) {
+    print(err);
+  }
+
+  return "";
+}
+
+Future<String> uploadDocumentToAzure(BuildContext context, String fileName, Uint8List content) async {
+
+  String checkInOutContainer = "documents";
+  String path = "https://boatrackstorage.blob.core.windows.net/documents/";
+
+  try {
+    var storage = AzureStorage.parse(connectionString);
+    String? contentType = lookupMimeType(fileName);
+    String name = "${DateTime.now().millisecondsSinceEpoch}_$fileName";
+    await storage.putBlob('/$checkInOutContainer/$name', bodyBytes: content,
+      contentType: contentType,
+      type: BlobType.BlockBlob,);
+    return path + name;
+  } on AzureStorageException catch (ex) {
+    print(ex.message);
+  } catch (err) {
+    print(err);
+  }
+
+  return "";
+}
+
+
+Map<String, String> createHeaders() {
+  return {
+    "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+  };
+}

@@ -7,10 +7,11 @@ import 'package:boatrack_mobile_app/resources/styles/box_decorations.dart';
 import 'package:boatrack_mobile_app/resources/styles/text_styles.dart';
 import 'package:boatrack_mobile_app/widgets/helper/widget_report_issue.dart';
 import 'package:flutter/material.dart';
-
+import 'package:galleryimage/galleryimage.dart';
 import '../../models/yacht.dart';
 import '../../resources/colors.dart';
 import '../../services/api/api_check_in_out.dart';
+import '../helper/widget_image_gallery.dart';
 
 class WidgetCheckProcedure extends StatefulWidget {
   final bool checkIn;
@@ -61,6 +62,12 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
             } else if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             } else {
+
+              List<String> images = [];
+              if(segments[_page].images.isNotEmpty){
+                images = segments[_page].images.map((e) => e.toString()).toList();
+              }
+
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -83,7 +90,17 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
                             Text(
                               segments[_page].description.toString(),
                               style: CustomTextStyles.regularText(context),
-                            )
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Visibility(
+                                visible: segments[_page].images.isNotEmpty,
+                                child: SizedBox(
+                                  height: height * 0.4,
+                                  width: width ,
+                                  child: WidgetImageGallery(images: images,),
+                                ))
                           ],
                         ),
                       ),
@@ -108,7 +125,7 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
                                             yachtID: widget.yacht.id!)),
                                   );
 
-                                  if(issue != null){
+                                  if (issue != null) {
                                     procedureHasIssues = true;
                                     segments[_page].issue = issue;
                                   }
@@ -202,12 +219,11 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
                                   answerSelected = false;
                                   issue = null;
 
-
                                   if (_page < (segments.length - 1)) {
                                     setState(() {
                                       _page++;
                                     });
-                                  }else{
+                                  } else {
                                     sendData();
                                   }
                                 }
@@ -222,7 +238,9 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
                                         .buttonDisabledBoxDecoration(),
                                 child: Center(
                                   child: Text(
-                                    segments.length == (_page + 1) ? "FINISH" : "CONTINUE",
+                                    segments.length == (_page + 1)
+                                        ? "FINISH"
+                                        : "CONTINUE",
                                     style: CustomTextStyles.buttonText(context),
                                   ),
                                 )),
@@ -238,7 +256,7 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
     );
   }
 
-  void sendData() async{
+  void sendData() async {
     CheckInOut check = CheckInOut();
     check.segments = segments;
     check.timestampData = DateTime.now().toIso8601String();

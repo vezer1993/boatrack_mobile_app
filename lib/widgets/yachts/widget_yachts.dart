@@ -21,7 +21,7 @@ class _WidgetYachtsState extends State<WidgetYachts> {
   List<Yacht> yachts = [];
 
   Future loadYachts() async {
-    yachts = await getYachtList(false);
+    yachts = await getYachtList(false, context);
     return yachts;
   }
 

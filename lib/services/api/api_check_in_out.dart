@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import '../services.dart';
 
 
-Future getCheckModel(String id) async {
-  var response = await getResponse("${STRINGS_API.api_check_in_out_model}/${id}") as http.Response;
+Future getCheckModel(String id, BuildContext context) async {
+  var response = await getResponse("${STRINGS_API.api_check_in_out_model}/${id}", context) as http.Response;
   var jsonObject = json.decode(response.body);
   return CheckModel.fromJson(jsonObject[0]);
 }
@@ -20,6 +20,6 @@ Future postCheckModel(BuildContext context, CheckInOut model, bool isCheckIn) as
   if(!isCheckIn){
     path = STRINGS_API.api_check_out;
   }
-  var response = await postResponse(path, model.toJson()) as http.Response;
+  var response = await postResponse(path, model.toJson(), context) as http.Response;
 
 }

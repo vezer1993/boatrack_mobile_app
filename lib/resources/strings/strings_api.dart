@@ -7,6 +7,7 @@ class STRINGS_API {
   ///ACCOUNTS
 
   static String api_accounts_mobile_login = "/Accounts/mobile";
+  static String api_task_list = "/Task/list";
 
   ///YACHTS
 
@@ -25,5 +26,12 @@ class STRINGS_API {
 
   ///CLEANINGS
   static String api_cleaning = "/Cleanings";
+
+  static getPathBookingArrival() {}
+
+  ///BOOKINGS
+  static String api_booking = "/Bookings";
+  static String api_booking_guest = "/Guests";
+  static String api_booking_preparation = "/Bookings/preparation";
 
 }

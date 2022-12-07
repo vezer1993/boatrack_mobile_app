@@ -18,6 +18,12 @@ class CustomDecorations{
       );
   }
 
+  static BoxDecoration standardBoxDecoration() {
+    return BoxDecoration(
+      color: CustomColors().altBackgroundColor,
+      borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+    );
+  }
 
   static BoxDecoration buttonDisabledBoxDecoration() {
     return BoxDecoration(

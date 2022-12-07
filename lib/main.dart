@@ -5,6 +5,7 @@ import 'package:boatrack_mobile_app/resources/storage/prefferences.dart';
 import 'package:boatrack_mobile_app/resources/strings/strings_prefferences.dart';
 import 'package:flutter/material.dart';
 
+
 void main() {
   runApp(const MyApp());
 }

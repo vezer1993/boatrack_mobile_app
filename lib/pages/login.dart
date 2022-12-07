@@ -1,5 +1,7 @@
 import 'package:boatrack_mobile_app/resources/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 import '../services/api/authentication.dart';
 import 'home.dart';
@@ -21,72 +23,80 @@ class _LoginpageState extends State<Loginpage> {
       appBar: AppBar(
         title: Text("Boatrack Login"),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: Center(
-                child: Container(
-                    width: 200,
-                    height: 150,
-                    /*decoration: BoxDecoration(
+      body: LoaderOverlay(
+        useDefaultLoading: false,
+        overlayWidget: Center(
+          child: SpinKitWave(
+            color: CustomColors().primaryColor,
+            size: 50.0,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 60.0),
+                child: Center(
+                  child: Container(
+                      width: 200,
+                      height: 150,
+                      /*decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(50.0)),*/
-                    child: Text('BOATRACK')),
-              ),
-            ),
-            Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                controller: usernameController,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'USERNAME',
-                    hintText: 'Enter username'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                controller: pinController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'PIN',
-                    hintText: 'Enter pin'),
-              ),
-            ),
-            const SizedBox(height: 50,),
-            Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-              child: ElevatedButton(
-                onPressed: () async {
-                  bool success = await loginToMobile(usernameController.text, pinController.text);
-
-                  if(success){
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  }
-                },
-                child: const Text(
-                  'Login',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                      child: Text('BOATRACK')),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: TextField(
+                  controller: usernameController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'USERNAME',
+                      hintText: 'Enter username'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 15.0, right: 15.0, top: 15, bottom: 0),
+                //padding: EdgeInsets.symmetric(horizontal: 15),
+                child: TextField(
+                  controller: pinController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'PIN',
+                      hintText: 'Enter pin'),
+                ),
+              ),
+              const SizedBox(height: 50,),
+              Container(
+                height: 50,
+                width: 250,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    bool success = await loginToMobile(usernameController.text, pinController.text, context);
+
+                    if(success){
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const HomePage()),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      ));
   }
 }

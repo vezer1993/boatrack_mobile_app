@@ -161,4 +161,14 @@ class Yacht {
 
     return result;
   }
+
+  Booking? getBookingForGivenDate(String date){
+    for(Booking b in bookings!){
+      if(b.datefrom!.contains(date)){
+        b.yacht = this;
+        return b;
+      }
+    }
+    return null;
+  }
 }

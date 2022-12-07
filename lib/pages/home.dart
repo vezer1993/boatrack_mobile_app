@@ -2,8 +2,9 @@ import 'package:boatrack_mobile_app/widgets/bookings/widget_bookings.dart';
 import 'package:boatrack_mobile_app/widgets/settings/widget_settings.dart';
 import 'package:boatrack_mobile_app/widgets/yachts/widget_yachts.dart';
 import 'package:flutter/material.dart';
-
 import '../resources/colors.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -43,8 +44,10 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: CustomColors().altBackgroundColor,
         onTap: _onItemTapped,
       ),
-      body: Center(
-        child: widgets[_selectedIndex],
+      body: LoaderOverlay(
+        child: Center(
+          child: widgets[_selectedIndex],
+        ),
       ),
     );
   }

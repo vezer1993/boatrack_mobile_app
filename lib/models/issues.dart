@@ -1,20 +1,25 @@
 import 'issues_images.dart';
 
-class IssuesNavigation {
+class IssueItem {
   int? id;
   String? name;
   String? description;
   int? checkinId;
   int? checkoutId;
-  int? yachtId;
   bool? hasPictures;
   int? cleaningId;
+  String? timestamp;
+  String? resolutionNote;
+  bool? resolved;
+  String? document;
   String? checkin;
   String? checkout;
   String? cleaning;
+  int? accountID;
+  int? yachtId;
   List<IssueImages>? issueImages;
 
-  IssuesNavigation(
+  IssueItem(
       {this.id,
         this.name,
         this.description,
@@ -25,9 +30,10 @@ class IssuesNavigation {
         this.checkin,
         this.checkout,
         this.cleaning,
+        this.accountID,
         this.issueImages});
 
-  IssuesNavigation.fromJson(Map<String, dynamic> json) {
+  IssueItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
@@ -52,6 +58,7 @@ class IssuesNavigation {
     data['description'] = this.description;
     data['yachtID'] = this.yachtId;
     data['hasPictures'] = this.hasPictures;
+    data['accountId'] = this.accountID;
     return data;
   }
 }

@@ -13,7 +13,7 @@ class CheckSegment{
   bool? outside;
 
   bool pass = false;
-  IssuesNavigation? issue;
+  IssueItem? issue;
 
   TextEditingController? nameEditingController;
   TextEditingController? descriptionEditingController;

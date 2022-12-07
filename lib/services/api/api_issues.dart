@@ -10,11 +10,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../services.dart';
 
-Future postIssue(IssuesNavigation issue, BuildContext context, List<CustomImage> pictures) async {
+Future postIssue(IssueItem issue, BuildContext context, List<CustomImage> pictures) async {
 
-  var response = await postResponse(STRINGS_API.api_issues, issue.toJson()) as http.Response;
+  var response = await postResponse(STRINGS_API.api_issues, issue.toJson(), context) as http.Response;
   var jsonObject = json.decode(response.body);
-  IssuesNavigation createdIssue = IssuesNavigation.fromJson(jsonObject);
+  IssueItem createdIssue = IssueItem.fromJson(jsonObject);
 
   if(pictures.isNotEmpty){
     for(CustomImage pic in pictures){
@@ -22,7 +22,7 @@ Future postIssue(IssuesNavigation issue, BuildContext context, List<CustomImage>
 
       IssueImages issueImage = IssueImages(imagePath: path, issueId: createdIssue.id);
 
-      await postResponse(STRINGS_API.api_issue_images, issueImage.toJson()) as http.Response;
+      await postResponse(STRINGS_API.api_issue_images, issueImage.toJson(), context) as http.Response;
     }
   }
 

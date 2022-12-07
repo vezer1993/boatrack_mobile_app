@@ -8,7 +8,11 @@ import 'package:boatrack_mobile_app/resources/styles/box_decorations.dart';
 import 'package:boatrack_mobile_app/resources/styles/text_styles.dart';
 import 'package:boatrack_mobile_app/services/api/api_issues.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+
+import '../../services/services.dart';
 
 class WidgetIssueReport extends StatefulWidget {
   final int yachtID;
@@ -56,135 +60,146 @@ class _WidgetIssueReportState extends State<WidgetIssueReport> {
     return Scaffold(
       backgroundColor: CustomColors().appBackgroundColor,
       resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: width * 0.1),
-              child: Text(
-                "TITLE",
-                style: CustomTextStyles.headerText(context),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Center(
-              child: SizedBox(
-                width: width * 0.7,
-                child: TextFormField(
-                  controller: titleController,
-                  autocorrect: false,
-                  cursorColor: CustomColors().primaryColor,
-                  style: CustomTextStyles.regularText(context),
-                  decoration: CustomDecorations.inputDecoration(),
+      body: LoaderOverlay(
+        useDefaultLoading: false,
+        overlayWidget: Center(
+          child: SpinKitWave(
+            color: CustomColors().primaryColor,
+            size: 50.0,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: width * 0.1),
+                child: Text(
+                  "TITLE",
+                  style: CustomTextStyles.headerText(context),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: width * 0.1),
-              child: Text(
-                "DESCRIPTION",
-                style: CustomTextStyles.headerText(context),
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Center(
-              child: SizedBox(
-                width: width * 0.7,
-                child: TextFormField(
-                  controller: descriptionController,
-                  autocorrect: false,
-                  minLines: 5,
-                  maxLines: 12,
-                  cursorColor: CustomColors().primaryColor,
-                  style: CustomTextStyles.regularText(context),
-                  decoration: CustomDecorations.inputDecoration(),
+              Center(
+                child: SizedBox(
+                  width: width * 0.7,
+                  child: TextFormField(
+                    controller: titleController,
+                    autocorrect: false,
+                    cursorColor: CustomColors().primaryColor,
+                    style: CustomTextStyles.regularText(context),
+                    decoration: CustomDecorations.inputDecoration(),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Visibility(visible: hasPictures,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for(CustomImage pic in pictures)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Image.memory(pic.imageByte, width: 50, height: 70,),
-                    ),
-                ],
-              ),),
-            const SizedBox(height: 5,),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  takePicture();
-                },
-                child: Container(
-                    width: width * 0.5,
-                    height: height * 0.08,
-                    decoration: CustomDecorations
-                        .buttonFailBoxDecoration(),
-                    child: Center(
-                      child: Text(
-                        "TAKE PICTURE",
-                        style: CustomTextStyles.buttonText(
-                            context),
+              const SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: width * 0.1),
+                child: Text(
+                  "DESCRIPTION",
+                  style: CustomTextStyles.headerText(context),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Center(
+                child: SizedBox(
+                  width: width * 0.7,
+                  child: TextFormField(
+                    controller: descriptionController,
+                    autocorrect: false,
+                    minLines: 5,
+                    maxLines: 12,
+                    cursorColor: CustomColors().primaryColor,
+                    style: CustomTextStyles.regularText(context),
+                    decoration: CustomDecorations.inputDecoration(),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Visibility(visible: hasPictures,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for(CustomImage pic in pictures)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Image.memory(pic.imageByte, width: 50, height: 70,),
                       ),
-                    )),
-              ),
-            ),
-            const Spacer(),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20),
+                  ],
+                ),),
+              const SizedBox(height: 5,),
+              Center(
                 child: InkWell(
                   onTap: () {
-                    reportIssue();
+                    takePicture();
                   },
                   child: Container(
-                      width: width * 0.7,
+                      width: width * 0.5,
                       height: height * 0.08,
                       decoration: CustomDecorations
-                          .buttonBoxDecoration(),
+                          .buttonFailBoxDecoration(),
                       child: Center(
                         child: Text(
-                          "REPORT ISSUE",
+                          "TAKE PICTURE",
                           style: CustomTextStyles.buttonText(
                               context),
                         ),
                       )),
                 ),
               ),
-            ),
+              const Spacer(),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: InkWell(
+                    onTap: () {
+                      reportIssue();
+                    },
+                    child: Container(
+                        width: width * 0.7,
+                        height: height * 0.08,
+                        decoration: CustomDecorations
+                            .buttonBoxDecoration(),
+                        child: Center(
+                          child: Text(
+                            "REPORT ISSUE",
+                            style: CustomTextStyles.buttonText(
+                                context),
+                          ),
+                        )),
+                  ),
+                ),
+              ),
 
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      ));
   }
 
   reportIssue() async{
-    IssuesNavigation issue = IssuesNavigation();
+    context.loaderOverlay.show();
+    IssueItem issue = IssueItem();
     issue.name = titleController.text;
     issue.description = descriptionController.text;
     issue.yachtId = widget.yachtID;
     issue.hasPictures = hasPictures;
+    issue.accountID = (await getAccount()).id;
 
     bool response = await postIssue(issue, context, pictures);
 
     if(response){
+      context.loaderOverlay.hide();
       Navigator.pop(context, issue);
     }
   }

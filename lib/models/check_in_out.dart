@@ -21,7 +21,7 @@ class CheckInOut {
   int? yachtID;
   String? timestampData;
   List<String>? bookings;
-  List<IssuesNavigation>? issuesNavigation;
+  List<IssueItem>? issuesNavigation;
 
   List<CheckSegment>? segments;
   Yacht? yacht;
@@ -48,9 +48,9 @@ class CheckInOut {
     document = json['document'];
     bookings = json['bookings'].cast<String>();
     if (json['issuesNavigation'] != null) {
-      issuesNavigation = <IssuesNavigation>[];
+      issuesNavigation = <IssueItem>[];
       json['issuesNavigation'].forEach((v) {
-        issuesNavigation!.add(IssuesNavigation.fromJson(v));
+        issuesNavigation!.add(IssueItem.fromJson(v));
       });
     }
   }

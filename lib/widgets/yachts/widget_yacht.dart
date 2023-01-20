@@ -3,6 +3,7 @@ import 'package:boatrack_mobile_app/resources/styles/text_styles.dart';
 import 'package:boatrack_mobile_app/widgets/helper/widget_report_issue.dart';
 import 'package:boatrack_mobile_app/widgets/yachts/widget_check_procedure.dart';
 import 'package:boatrack_mobile_app/widgets/yachts/widget_cleaning.dart';
+import 'package:boatrack_mobile_app/widgets/yachts/widget_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -152,6 +153,32 @@ class _WidgetYachtState extends State<WidgetYacht> {
                           const SizedBox(width: 20,),
                           Text(
                             "CLEANING",
+                            style: CustomTextStyles.buttonText(context),
+                          ),
+                        ],
+                      )
+                  )
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15, bottom: 15),
+              child: InkWell(onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WidgetService(yacht: widget.yacht)),
+                );
+              }, child: Container(
+                  width: width * 0.6,
+                  height: height * 0.1,
+                  decoration: CustomDecorations.buttonBoxDecoration(),
+                  child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.home_repair_service),
+                          const SizedBox(width: 20,),
+                          Text(
+                            "SERVICE",
                             style: CustomTextStyles.buttonText(context),
                           ),
                         ],

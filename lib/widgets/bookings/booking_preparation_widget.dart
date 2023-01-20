@@ -108,8 +108,8 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
                   const SizedBox(height: 30,),
                   Row(
                     children: [
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK OUT:     ", style: CustomTextStyles.regularText(context),), checkOut],)),),
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CLEANING:     ", style: CustomTextStyles.regularText(context),), cleaning],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK OUT: ", style: CustomTextStyles.regularText(context),), checkOut],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CLEANING: ", style: CustomTextStyles.regularText(context),), cleaning],)),),
                     ],
                   ),
                   const SizedBox(height: 7,),
@@ -117,8 +117,8 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
                   const SizedBox(height: 7,),
                   Row(
                     children: [
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("PREP:     ", style: CustomTextStyles.regularText(context),), prep],)),),
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("GUESTS ARRIVED:   ", style: CustomTextStyles.regularText(context),), guestsArrived],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("PREP: ", style: CustomTextStyles.regularText(context),), prep],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("GUESTS ARRIVED: ", style: CustomTextStyles.regularText(context),), guestsArrived],)),),
                     ],
                   ),
                   const SizedBox(height: 7,),
@@ -126,8 +126,8 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
                   const SizedBox(height: 7,),
                   Row(
                     children: [
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK IN:     ", style: CustomTextStyles.regularText(context),), checkIn],),),),
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CREW COUNT:     ${widget.booking.crewcount}", style: CustomTextStyles.regularText(context),),],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK IN: ", style: CustomTextStyles.regularText(context),), checkIn],),),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CREW COUNT: ${widget.booking.crewcount}", style: CustomTextStyles.regularText(context),),],)),),
                     ],
                   ),
                   const SizedBox(height: 7,),

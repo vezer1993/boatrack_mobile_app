@@ -26,6 +26,7 @@ class EmployeeTask {
     taskType = json['taskType'];
     typeId = json['typeId'];
     accountId = json['accountId'];
+    timeCreated = json['timeCreated'];
     resolved = json['resolved'];
   }
 

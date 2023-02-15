@@ -7,14 +7,13 @@ import 'package:boatrack_mobile_app/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-import '../../models/account.dart';
 import '../../models/cleaning.dart';
 import '../../models/yacht.dart';
 import '../../resources/colors.dart';
 import '../../resources/styles/box_decorations.dart';
+import '../helper/global_snackbar.dart';
 import '../helper/widget_report_issue.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 
 class WidgetCleaning extends StatefulWidget {
   const WidgetCleaning({Key? key, required this.yacht}) : super(key: key);
@@ -185,6 +184,7 @@ class _WidgetCleaningState extends State<WidgetCleaning> {
     bool success = await postCleaning(c, c.yachtId!, context);
 
     if(success){
+      GlobalSnackBar.show(context, "Completed cleaning for " + widget.yacht.name.toString());
       Navigator.pop(context);
     }
   }

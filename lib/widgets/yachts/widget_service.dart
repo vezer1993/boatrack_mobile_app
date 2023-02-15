@@ -1,4 +1,5 @@
 import 'package:boatrack_mobile_app/models/yacht.dart';
+import 'package:boatrack_mobile_app/widgets/helper/global_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -64,9 +65,9 @@ class _WidgetServiceState extends State<WidgetService> {
                     padding: const EdgeInsets.only(top: 30, bottom: 15),
                     child: InkWell(onTap: () async {
                       timeStarted = DateTime.now().toIso8601String();
-                      await LOCAL_STORAGE.saveValue(STRINGS_PREFFERENCES.cleaning, timeStarted);
+                      await LOCAL_STORAGE.saveValue(STRINGS_PREFFERENCES.service, timeStarted);
                       setState(() {
-
+                        print("HELLO");
                       });
                     }, child: Container(
                         width: width * 0.6,
@@ -105,7 +106,7 @@ class _WidgetServiceState extends State<WidgetService> {
                                     Icon(Icons.stop_outlined),
                                     const SizedBox(width: 20,),
                                     Text(
-                                      "FINISH CLEANING",
+                                      "FINISH SERVICE",
                                       style: CustomTextStyles.buttonText(context),
                                     ),
                                   ],
@@ -134,7 +135,7 @@ class _WidgetServiceState extends State<WidgetService> {
 
   void finishService() async {
 
-    await LOCAL_STORAGE.removeValue(STRINGS_PREFFERENCES.cleaning);
+    await LOCAL_STORAGE.removeValue(STRINGS_PREFFERENCES.service);
 
     //bool success = await postCleaning(c, c.yachtId!, context);
 

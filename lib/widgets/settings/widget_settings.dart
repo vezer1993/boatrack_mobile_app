@@ -2,8 +2,10 @@ import 'package:boatrack_mobile_app/models/employeeTask.dart';
 import 'package:boatrack_mobile_app/resources/styles/box_decorations.dart';
 import 'package:boatrack_mobile_app/resources/styles/text_styles.dart';
 import 'package:boatrack_mobile_app/services/api/api_account.dart';
-import 'package:boatrack_mobile_app/widgets/bookings/boooking_item_widget.dart';
+import 'package:boatrack_mobile_app/widgets/settings/widget_task_group.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/notification_type.dart';
 
 class WidgetSettings extends StatefulWidget {
   const WidgetSettings({Key? key}) : super(key: key);
@@ -16,9 +18,26 @@ class _WidgetSettingsState extends State<WidgetSettings> {
   late List<EmployeeTask> futureData;
   bool dataLoaded = false;
 
+  List<EmployeeTask> cleaningTasks = [];
+  List<EmployeeTask> checkinTasks = [];
+  List<EmployeeTask> checkoutTasks = [];
+  List<EmployeeTask> serviceTasks = [];
+
+
   Future getFutureData() async {
     if (!dataLoaded) {
       futureData = await getTaskList(context);
+      for(EmployeeTask task in futureData){
+        if(task.taskType == NotificationEnum.checkin){
+          checkinTasks.add(task);
+        } else if(task.taskType == NotificationEnum.checkout){
+          checkoutTasks.add(task);
+        } else if(task.taskType == NotificationEnum.cleaning){
+          cleaningTasks.add(task);
+        } else if(task.taskType == NotificationEnum.service){
+          serviceTasks.add(task);
+        }
+      }
       dataLoaded = true;
     }
     return futureData;
@@ -40,7 +59,20 @@ class _WidgetSettingsState extends State<WidgetSettings> {
               } else if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               } else {
-                return ListView.builder(
+
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 30,),
+                    Center(child: Text("TASK LIST", style: CustomTextStyles.headerText(context),),),
+                    Visibility(visible: checkinTasks.isNotEmpty, child: TaskGroup(tasks:checkinTasks, title: "CHECK INs", icon: Icons.double_arrow_outlined, )),
+                    Visibility(visible: checkoutTasks.isNotEmpty, child: TaskGroup(tasks:checkoutTasks, title: "CHECK OUTs", icon: Icons.subdirectory_arrow_left_outlined,)),
+                    Visibility(visible: cleaningTasks.isNotEmpty, child: TaskGroup(tasks:cleaningTasks, title: "CLEANING", icon: Icons.cleaning_services,)),
+                  ],
+                );
+
+               /* return ListView.builder(
                   itemCount: futureData.length,
                   itemBuilder: (context, index) {
                     index--;
@@ -75,7 +107,7 @@ class _WidgetSettingsState extends State<WidgetSettings> {
                       ],
                     );
                   },
-                );
+                ); */
               }
             }));
   }

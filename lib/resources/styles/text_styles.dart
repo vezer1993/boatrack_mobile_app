@@ -28,6 +28,28 @@ class CustomTextStyles {
     );
   }
 
+  static TextStyle? titleText (BuildContext context){
+    double unitHeightValue = MediaQuery.of(context).size.height * 0.01;
+    double multiplier = 2.1;
+
+    return Theme.of(context).textTheme.headline1?.copyWith(
+        fontSize: multiplier * unitHeightValue,
+        color: CustomColors().navigationTextColor,
+        fontWeight: FontWeight.bold
+    );
+  }
+
+  static TextStyle? descriptionText (BuildContext context){
+    double unitHeightValue = MediaQuery.of(context).size.height * 0.01;
+    double multiplier = 1.6;
+
+    return Theme.of(context).textTheme.headline1?.copyWith(
+        fontSize: multiplier * unitHeightValue,
+        color: CustomColors().descriptionTextColor,
+        fontWeight: FontWeight.bold
+    );
+  }
+
   static TextStyle? buttonText (BuildContext context){
     double unitHeightValue = MediaQuery.of(context).size.height * 0.01;
     double multiplier = 2.5;

@@ -29,7 +29,19 @@ class WidgetCheckProcedure extends StatefulWidget {
 
 class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
   List<CheckSegment> segments = [];
+
+  List<CheckSegment> segmentsDeck = [];
+  List<CheckSegment> segmentsSaloonCabin = [];
+  List<CheckSegment> segmentsLocker = [];
+  List<CheckSegment> segmentsKitchen = [];
+  List<CheckSegment> segmentsEngine = [];
+  List<CheckSegment> segmentsVarious = [];
   int _page = 0;
+
+  double width = 0;
+  double height = 0;
+
+  bool isChecked = false;
 
   IssueItem? issue;
 
@@ -51,219 +63,235 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: CustomColors().appBackgroundColor,
-      body: LoaderOverlay(
-        useDefaultLoading: false,
-        overlayWidget: Center(
-          child: SpinKitWave(
-            color: CustomColors().primaryColor,
-            size: 50.0,
+        backgroundColor: CustomColors().appBackgroundColor,
+        body: LoaderOverlay(
+          useDefaultLoading: false,
+          overlayWidget: Center(
+            child: SpinKitWave(
+              color: CustomColors().primaryColor,
+              size: 50.0,
+            ),
           ),
-        ),
-        child: FutureBuilder(
-            future: getModel(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.none) {
-                return const Text("NO CONNECTION");
-              } else if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
+          child: FutureBuilder(
+              future: getModel(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.none) {
+                  return const Text("NO CONNECTION");
+                } else if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  List<String> images = [];
+                  if (segments[_page].images.isNotEmpty) {
+                    images = segments[_page]
+                        .images
+                        .map((e) => e.toString())
+                        .toList();
+                  }
 
-                List<String> images = [];
-                if(segments[_page].images.isNotEmpty){
-                  images = segments[_page].images.map((e) => e.toString()).toList();
-                }
+                  if(segmentsDeck.isEmpty){
+                    createSegmentLists();
+                  }
 
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SingleChildScrollView(
-                      child: SizedBox(
-                        height: height * 0.65,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Text(
-                                  segments[_page].name.toString(),
-                                  style: CustomTextStyles.headerText(context),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                segments[_page].description.toString(),
-                                style: CustomTextStyles.regularText(context),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Visibility(
-                                  visible: segments[_page].images.isNotEmpty,
-                                  child: SizedBox(
-                                    height: height * 0.4,
-                                    width: width ,
-                                    child: WidgetImageGallery(images: images,),
-                                  ))
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.35,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Visibility(
-                              visible: fail,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() async {
-                                    issue = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WidgetIssueReport(
-                                              yachtID: widget.yacht.id!)),
-                                    );
-
-                                    if (issue != null) {
-                                      procedureHasIssues = true;
-                                      segments[_page].issue = issue;
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                    width: width * 0.5,
-                                    height: height * 0.08,
-                                    decoration: CustomDecorations
-                                        .buttonFailBoxDecoration(),
-                                    child: Center(
-                                      child: Text(
-                                        "REPORT ISSUE",
-                                        style:
-                                        CustomTextStyles.buttonText(context),
-                                      ),
-                                    )),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 45, right: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      fail = true;
-                                      pass = false;
-                                      answerSelected = true;
-                                    });
-                                  },
-                                  child: Container(
-                                      width: width * 0.35,
-                                      height: height * 0.08,
-                                      decoration: fail
-                                          ? CustomDecorations
-                                          .buttonFailBoxDecoration()
-                                          : CustomDecorations
-                                          .buttonDisabledBoxDecoration(),
-                                      child: Center(
-                                        child: Text(
-                                          "FAIL",
-                                          style: CustomTextStyles.buttonText(
-                                              context),
-                                        ),
-                                      )),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    "DECK",
+                                    style: CustomTextStyles.headerText(context),
+                                  ),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      fail = false;
-                                      pass = true;
-                                      answerSelected = true;
-                                    });
-                                  },
-                                  child: Container(
-                                      width: width * 0.35,
-                                      height: height * 0.08,
-                                      decoration: pass
-                                          ? CustomDecorations
-                                          .buttonPassBoxDecoration()
-                                          : CustomDecorations
-                                          .buttonDisabledBoxDecoration(),
-                                      child: Center(
-                                        child: Text(
-                                          "PASS",
-                                          style: CustomTextStyles.buttonText(
-                                              context),
-                                        ),
-                                      )),
+                                const Spacer(),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 13, right: 5),
+                                  child: Text(
+                                    "CHECK ALL",
+                                    style: CustomTextStyles.titleText(context),
+                                  ),
+                                ),
+                                Transform.scale(
+                                  scale: 1.6,
+                                  child: Checkbox(
+                                    checkColor: Colors.white,
+                                    fillColor: MaterialStateProperty.all(
+                                        CustomColors().primaryColor),
+                                    value: isChecked,
+                                    shape: CircleBorder(),
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        for(CheckSegment seg in segmentsDeck){
+                                          seg.pass = value!;
+                                        }
+                                        isChecked = value!;
+                                      });
+                                    },
+                                  ),
                                 )
                               ],
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  if (answerSelected) {
-                                    if (fail) {
-                                      segments[_page].pass = false;
-                                    } else {
-                                      segments[_page].pass = true;
-                                    }
+                          ),
+                          Container(
+                            height: 2,
+                            width: double.infinity,
+                            color: CustomColors().primaryColor,
+                          ),
+                          getListview(segmentsDeck),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              }),
+        ));
+  }
 
-                                    fail = false;
-                                    pass = false;
-                                    answerSelected = false;
-                                    issue = null;
-
-                                    if (_page < (segments.length - 1)) {
-                                      setState(() {
-                                        _page++;
-                                      });
-                                    } else {
-                                      sendData();
-                                    }
-                                  }
-                                });
-                              },
-                              child: Container(
-                                  width: width * 0.6,
-                                  height: height * 0.08,
-                                  decoration: answerSelected
-                                      ? CustomDecorations.buttonBoxDecoration()
-                                      : CustomDecorations
-                                      .buttonDisabledBoxDecoration(),
-                                  child: Center(
-                                    child: Text(
-                                      segments.length == (_page + 1)
-                                          ? "FINISH"
-                                          : "CONTINUE",
-                                      style: CustomTextStyles.buttonText(context),
-                                    ),
-                                  )),
-                            )
-                          ],
-                        ),
+  Widget getListview(List<CheckSegment> segments) {
+    return ListView.builder(
+        shrinkWrap: true,
+        primary: false,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: segments.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 11,),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    segments[index].expand = !segments[index].expand;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 7, left: 10),
+                      child: Text(segments[index].name.toString(), style: CustomTextStyles.titleText(context)!.copyWith(fontSize: 22),),
+                    ),
+                    Spacer(),
+                    Transform.scale(
+                      scale: 1.6,
+                      child: Checkbox(
+                        checkColor: Colors.white,
+                        fillColor: MaterialStateProperty.all(
+                            Colors.red),
+                        value: segments[index].pass,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            segments[index].pass = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    Transform.scale(
+                      scale: 1.6,
+                      child: Checkbox(
+                        checkColor: Colors.white,
+                        fillColor: MaterialStateProperty.all(
+                            Colors.green),
+                        value: segments[index].pass,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            segments[index].pass = value!;
+                          });
+                        },
                       ),
                     )
                   ],
-                );
-              }
-            }),
-      ));
+                ),
+              ),
+              const SizedBox(height: 11,),
+              Visibility(
+                visible: segments[index].expand,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(child: Text(segments[index].description.toString()),),
+                    SizedBox(height: 5,),
+                    Center(child: Padding(
+                      padding: const EdgeInsets.only(top: 30, bottom: 15),
+                      child: InkWell(onTap: () async {
+                        IssueItem issue = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WidgetIssueReport(
+                                  yachtID: widget.yacht.id!)),
+                        );
+                        segments[index].issue = issue;
+                      }, child: Container(
+                          width: width * 0.55,
+                          height: height * 0.07,
+                          decoration: CustomDecorations.buttonBoxDecoration(),
+                          child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.error_outline),
+                                  const SizedBox(width: 20,),
+                                  Text(
+                                    "REPORT ISSUE",
+                                    style: CustomTextStyles.buttonText(context),
+                                  ),
+                                ],
+                              )
+                          )
+                      )),
+                    ),)
+                  ],
+                ),
+              ),
+              Container(
+                height: 1,
+                width: double.infinity,
+                color: CustomColors().unSelectedItemColor,
+              ),
+            ],
+          );
+        });
+  }
+
+  createSegmentLists(){
+    segmentsDeck = [];
+    segmentsSaloonCabin = [];
+    segmentsLocker = [];
+    segmentsKitchen = [];
+    segmentsEngine = [];
+    segmentsVarious = [];
+
+    for (CheckSegment tempSeg in segments) {
+      if (tempSeg.parentGroup == "DECK") {
+        segmentsDeck.add(tempSeg);
+      } else if (tempSeg.parentGroup == "SALOON + CABINS") {
+        segmentsSaloonCabin.add(tempSeg);
+      } else if (tempSeg.parentGroup == "LOCKERS") {
+        segmentsLocker.add(tempSeg);
+      } else if (tempSeg.parentGroup == "KITCHEN") {
+        segmentsKitchen.add(tempSeg);
+      } else if (tempSeg.parentGroup == "ENGINE + EL. INSTAL.") {
+        segmentsEngine.add(tempSeg);
+      } else if (tempSeg.parentGroup == "VARIOUS") {
+        segmentsVarious.add(tempSeg);
+      }
+    }
   }
 
   void sendData() async {

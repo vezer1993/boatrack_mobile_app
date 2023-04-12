@@ -55,7 +55,7 @@ class CheckModel {
         if(object["images"] != null){
           seg.images = jsonDecode(object["images"]);
         }
-        seg.outside = object["outside"];
+        seg.parentGroup = object["parentGroup"];
 
         segments.add(seg);
       }

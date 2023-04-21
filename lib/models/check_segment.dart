@@ -14,6 +14,7 @@ class CheckSegment{
 
   bool pass = false;
   bool expand = false;
+  bool fail = false;
   IssueItem? issue;
 
   TextEditingController? nameEditingController;

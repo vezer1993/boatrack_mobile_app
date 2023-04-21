@@ -22,4 +22,10 @@ Future postCheckModel(BuildContext context, CheckInOut model, bool isCheckIn) as
   }
   var response = await postResponse(path, model.toJson(), context) as http.Response;
 
+  if(response.statusCode.toString().startsWith("2")){
+    return true;
+  }else{
+    return false;
+  }
+
 }

@@ -62,6 +62,7 @@ class CheckInOut {
     data['timestampData'] = this.timestampData;
     data['issues'] = this.issues;
     data['document'] = this.document;
+    data['isSkipper'] = this.isSkipper;
 
     return data;
   }

@@ -7,6 +7,7 @@ class Accounts {
   bool? isAdmin;
   String? pin;
   String? charter;
+  String? role;
   List<String>? cleanings;
 
   Accounts({this.id,
@@ -28,6 +29,7 @@ class Accounts {
     isAdmin = json['isAdmin'];
     pin = json['pin'];
     charter = json['charter'];
+    role = json['role'];
   }
 
   Map<String, dynamic> toJson() {
@@ -41,6 +43,7 @@ class Accounts {
     data['pin'] = this.pin;
     data['charter'] = this.charter;
     data['cleanings'] = this.cleanings;
+    data['role'] = this.role;
     return data;
   }
 }

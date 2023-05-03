@@ -21,6 +21,8 @@ class _WidgetSettingsState extends State<WidgetSettings> {
   List<EmployeeTask> cleaningTasks = [];
   List<EmployeeTask> checkinTasks = [];
   List<EmployeeTask> checkoutTasks = [];
+  List<EmployeeTask> preCheckinTasks = [];
+  List<EmployeeTask> postCheckoutTasks = [];
   List<EmployeeTask> serviceTasks = [];
 
 
@@ -36,6 +38,10 @@ class _WidgetSettingsState extends State<WidgetSettings> {
           cleaningTasks.add(task);
         } else if(task.taskType == NotificationEnum.service){
           serviceTasks.add(task);
+        } else if(task.taskType == NotificationEnum.preCheckin){
+          preCheckinTasks.add(task);
+        } else if(task.taskType == NotificationEnum.postCheckout){
+          postCheckoutTasks.add(task);
         }
       }
       dataLoaded = true;
@@ -69,6 +75,8 @@ class _WidgetSettingsState extends State<WidgetSettings> {
                     Visibility(visible: checkinTasks.isNotEmpty, child: TaskGroup(tasks:checkinTasks, title: "CHECK INs", icon: Icons.double_arrow_outlined, )),
                     Visibility(visible: checkoutTasks.isNotEmpty, child: TaskGroup(tasks:checkoutTasks, title: "CHECK OUTs", icon: Icons.subdirectory_arrow_left_outlined,)),
                     Visibility(visible: cleaningTasks.isNotEmpty, child: TaskGroup(tasks:cleaningTasks, title: "CLEANING", icon: Icons.cleaning_services,)),
+                    Visibility(visible: preCheckinTasks.isNotEmpty, child: TaskGroup(tasks:preCheckinTasks, title: "PRE CHECK IN PREPs", icon: Icons.keyboard_double_arrow_down_outlined, )),
+                    Visibility(visible: postCheckoutTasks.isNotEmpty, child: TaskGroup(tasks:postCheckoutTasks, title: "POST CHECKOUT PREPs", icon: Icons.keyboard_double_arrow_up_outlined, )),
                   ],
                 );
 

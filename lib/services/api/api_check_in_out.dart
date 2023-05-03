@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:boatrack_mobile_app/models/check_in_out.dart';
 import 'package:boatrack_mobile_app/models/check_model.dart';
+import 'package:boatrack_mobile_app/models/prep_object.dart';
 import 'package:boatrack_mobile_app/resources/strings/strings_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +23,21 @@ Future postCheckModel(BuildContext context, CheckInOut model, bool isCheckIn) as
   }
   var response = await postResponse(path, model.toJson(), context) as http.Response;
 
+  if(response.statusCode.toString().startsWith("2")){
+    return true;
+  }else{
+    return false;
+  }
+
+}
+
+Future postPrepModel(BuildContext context, PrepObject model) async{
+
+  String path = STRINGS_API.api_post_prep;
+  print(model.toJson());
+  var response = await postResponse(path, model.toJson(), context) as http.Response;
+  print(response.body);
+  print(response.statusCode);
   if(response.statusCode.toString().startsWith("2")){
     return true;
   }else{

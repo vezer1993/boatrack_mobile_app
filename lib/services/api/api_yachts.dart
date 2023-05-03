@@ -15,6 +15,8 @@ Future getYachtList(bool refresh, BuildContext context) async {
 
   String? jsonList = await LOCAL_STORAGE.getValue(STRINGS_PREFFERENCES.yachts);
 
+  refresh = true;
+
   if(jsonList == null || refresh == true){
     Charter c = await getCharter();
     var response = await getResponse("${STRINGS_API.api_yachts_list}/${c.id}", context) as http.Response;

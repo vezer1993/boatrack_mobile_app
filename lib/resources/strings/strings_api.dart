@@ -19,6 +19,10 @@ class STRINGS_API {
   static String api_check_in = "/Checkins";
   static String api_check_out = "/Checkouts";
 
+  ///PREP
+  static String api_post_prep = "/Preparations";
+
+
   ///ISSUES
 
   static String api_issues = "/Issues";

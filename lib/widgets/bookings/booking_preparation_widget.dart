@@ -61,7 +61,12 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
               size: 15,
               color: CustomColors().failBoxCheckMarkColor,
             );
-            Widget prep = FaIcon(
+            Widget prepPreCheckin = FaIcon(
+              FontAwesomeIcons.x,
+              size: 15,
+              color: CustomColors().failBoxCheckMarkColor,
+            );
+            Widget prepPostCheckout = FaIcon(
               FontAwesomeIcons.x,
               size: 15,
               color: CustomColors().failBoxCheckMarkColor,
@@ -91,6 +96,22 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
               );
             }
 
+            if(futureData.preCheckinPrep != null){
+              prepPreCheckin = FaIcon(
+                FontAwesomeIcons.checkDouble,
+                size: 15,
+                color: CustomColors().successBoxCheckMarkColor,
+              );
+            }
+
+            if(futureData.postCheckoutPrep != null){
+              prepPostCheckout = FaIcon(
+                FontAwesomeIcons.checkDouble,
+                size: 15,
+                color: CustomColors().successBoxCheckMarkColor,
+              );
+            }
+
             if(futureData.guestsArrived != null){
               if(futureData.guestsArrived!){
                 guestsArrived = FaIcon(
@@ -108,8 +129,8 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
                   const SizedBox(height: 30,),
                   Row(
                     children: [
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK OUT: ", style: CustomTextStyles.regularText(context),), checkOut],)),),
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CLEANING: ", style: CustomTextStyles.regularText(context),), cleaning],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK-OUT: ", style: CustomTextStyles.regularText(context),), checkOut],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK-OUT PREP: ", style: CustomTextStyles.regularText(context),), prepPostCheckout],)),),
                     ],
                   ),
                   const SizedBox(height: 7,),
@@ -117,8 +138,8 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
                   const SizedBox(height: 7,),
                   Row(
                     children: [
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("PREP: ", style: CustomTextStyles.regularText(context),), prep],)),),
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("GUESTS ARRIVED: ", style: CustomTextStyles.regularText(context),), guestsArrived],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CLEANING:     ", style: CustomTextStyles.regularText(context),), cleaning],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("GUESTS ARRIVED:     ", style: CustomTextStyles.regularText(context),), guestsArrived],)),),
                     ],
                   ),
                   const SizedBox(height: 7,),
@@ -126,14 +147,19 @@ class _BookingPreparationWidgetState extends State<BookingPreparationWidget> {
                   const SizedBox(height: 7,),
                   Row(
                     children: [
-                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK IN: ", style: CustomTextStyles.regularText(context),), checkIn],),),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK-IN PREP: ", style: CustomTextStyles.regularText(context),), prepPreCheckin],),),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CHECK-IN: ", style: CustomTextStyles.regularText(context),), checkIn],),),),
+                    ],
+                  ),
+                  const SizedBox(height: 7,),
+                  Container(width: double.infinity, height: 1, color: CustomColors().borderColor,),
+                  const SizedBox(height: 7,),
+                  Row(
+                    children: [
                       Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("CREW COUNT: ${widget.booking.crewcount}", style: CustomTextStyles.regularText(context),),],)),),
+                      Expanded(flex: 1,child: Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("NOTE:     ${widget.booking.note}", style: CustomTextStyles.regularText(context),),],)),),
                     ],
                   ),
-                  const SizedBox(height: 7,),
-                  Container(width: double.infinity, height: 1, color: CustomColors().borderColor,),
-                  const SizedBox(height: 7,),
-                  Center(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: [Text("NOTE:     ${widget.booking.note}", style: CustomTextStyles.regularText(context),),],))
                 ],
               ),
             );

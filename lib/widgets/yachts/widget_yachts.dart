@@ -1,11 +1,13 @@
 import 'package:boatrack_mobile_app/resources/colors.dart';
 import 'package:boatrack_mobile_app/resources/styles/box_decorations.dart';
 import 'package:boatrack_mobile_app/services/api/api_yachts.dart';
+import 'package:boatrack_mobile_app/services/services.dart';
 import 'package:boatrack_mobile_app/widgets/yachts/widget_yacht.dart';
 import 'package:flutter/material.dart';
 
 import '../../helper/calendar.dart';
 import '../../helper/conversion.dart';
+import '../../models/account.dart';
 import '../../models/booking.dart';
 import '../../models/yacht.dart';
 import '../../resources/styles/text_styles.dart';
@@ -19,9 +21,11 @@ class WidgetYachts extends StatefulWidget {
 
 class _WidgetYachtsState extends State<WidgetYachts> {
   List<Yacht> yachts = [];
+  late Accounts acc;
 
   Future loadYachts() async {
     yachts = await getYachtList(false, context);
+    acc = await getAccount();
     return yachts;
   }
 
@@ -67,7 +71,7 @@ class _WidgetYachtsState extends State<WidgetYachts> {
                       onTap: (){
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => WidgetYacht(yacht: yachts[index])),
+                          MaterialPageRoute(builder: (context) => WidgetYacht(yacht: yachts[index], role: acc.role.toString(),)),
                         );
                       },
                       child: Padding(

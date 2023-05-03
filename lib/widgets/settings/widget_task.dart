@@ -5,6 +5,8 @@ import 'package:boatrack_mobile_app/models/yacht.dart';
 import 'package:boatrack_mobile_app/resources/colors.dart';
 import 'package:boatrack_mobile_app/resources/styles/text_styles.dart';
 import 'package:boatrack_mobile_app/services/api/api_yachts.dart';
+import 'package:boatrack_mobile_app/widgets/yachts/widget__postcheckin_procedure.dart';
+import 'package:boatrack_mobile_app/widgets/yachts/widget_precheckin_procedure.dart';
 import 'package:flutter/material.dart';
 import '../../resources/styles/box_decorations.dart';
 import '../helper/alert_dialog.dart';
@@ -68,6 +70,16 @@ class _TaskWidgetState extends State<TaskWidget> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => WidgetCleaning(yacht: yacht)),
+                    );
+                  } else if (widget.task.taskType == NotificationEnum.preCheckin){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => YachtPreCheckInProcedure(yacht: yacht)),
+                    );
+                  } else if (widget.task.taskType == NotificationEnum.postCheckout){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => YachtPostCheckInProcedure(yacht: yacht)),
                     );
                   }
                 },

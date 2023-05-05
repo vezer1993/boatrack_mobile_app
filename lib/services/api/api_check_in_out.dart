@@ -14,6 +14,12 @@ Future getCheckModel(String id, BuildContext context) async {
   return CheckModel.fromJson(jsonObject[0]);
 }
 
+Future getLastCheckin(String id, BuildContext context) async {
+  var response = await getResponse("/Checkins/lastcheckin/${id}", context) as http.Response;
+  var jsonObject = json.decode(response.body);
+  return CheckInOut.fromJson(jsonObject);
+}
+
 Future postCheckModel(BuildContext context, CheckInOut model, bool isCheckIn) async{
   await model.generateDocument(context, isCheckIn);
 
@@ -34,10 +40,7 @@ Future postCheckModel(BuildContext context, CheckInOut model, bool isCheckIn) as
 Future postPrepModel(BuildContext context, PrepObject model) async{
 
   String path = STRINGS_API.api_post_prep;
-  print(model.toJson());
   var response = await postResponse(path, model.toJson(), context) as http.Response;
-  print(response.body);
-  print(response.statusCode);
   if(response.statusCode.toString().startsWith("2")){
     return true;
   }else{

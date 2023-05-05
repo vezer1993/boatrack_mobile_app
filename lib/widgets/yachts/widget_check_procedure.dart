@@ -43,6 +43,7 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
   double width = 0;
   double height = 0;
 
+  TextEditingController additionalFields = TextEditingController();
   List<bool> isChecked = [false, false, false, false, false, false];
   List<ScrollController> scrollControllers = [ScrollController(),ScrollController(), ScrollController(), ScrollController(), ScrollController(), ScrollController()];
 
@@ -51,11 +52,16 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
   bool procedureHasIssues = false;
   bool modelLoaded = false;
 
+  late CheckInOut lastCheckin;
+
   Future getModel() async {
     if (!modelLoaded) {
       CheckModel model =
           await getCheckModel(widget.yacht.checkModelId.toString(), context);
       segments = model.getModel();
+      if(widget.checkIn == false){
+          lastCheckin = await getLastCheckin(widget.yacht.id.toString(), context);
+      }
     }
     return segments;
   }
@@ -677,8 +683,9 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
                               padding: const EdgeInsets.only(top: 30, bottom: 15),
                               child: InkWell(onTap: notCompleted() ? null : () {
                                 setState(() {
-                                  context.loaderOverlay.show();
-                                  sendData();
+                                  _page++;
+                                  /*context.loaderOverlay.show();
+                                  sendData();*/
                                 });
                               }, child: Container(
                                   width: width * 0.6,
@@ -703,6 +710,123 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
                         ),
                       ),
                     );
+                  }
+                  
+                  if(_page == 6 && widget.checkIn){
+                    return Padding(padding: EdgeInsets.fromLTRB(20, 30, 20, 0), child: Column(
+                      children: [
+                        Center(child: Text("FINISHING CHECK IN", style: CustomTextStyles.headerText(context),)),
+                        const SizedBox(height: 20,),
+                        Center(child: Text("Additional note", style: CustomTextStyles.regularText(context),)),
+                        const SizedBox(height: 5,),
+                        Center(
+                          child: SizedBox(
+                            width: width * 0.7,
+                            child: TextFormField(
+                              controller: additionalFields,
+                              autocorrect: false,
+                              minLines: 5,
+                              maxLines: 12,
+                              cursorColor: CustomColors().primaryColor,
+                              style: CustomTextStyles.regularText(context),
+                              decoration: CustomDecorations.inputDecoration(),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height:20),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30, bottom: 15),
+                          child: InkWell(onTap: notCompleted() ? null : () {
+                            setState(() {
+                              context.loaderOverlay.show();
+                              sendData();
+                            });
+                          }, child: Container(
+                              width: width * 0.6,
+                              height: height * 0.08,
+                              decoration: notCompleted() ? CustomDecorations.buttonDisabledBoxDecoration() : CustomDecorations.buttonBoxDecoration(),
+                              child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "FINISH",
+                                        style: CustomTextStyles.buttonText(context),
+                                      ),
+                                    ],
+                                  )
+                              )
+                          )),
+                        ),
+                      ],
+                    ),);
+                  }
+
+                  if(_page == 6 && !widget.checkIn){
+                    return Padding(padding: EdgeInsets.fromLTRB(20, 30, 20, 0), child: Column(
+                      children: [
+                        Center(child: Text("FINISHING CHECK OUT", style: CustomTextStyles.headerText(context),)),
+                        const SizedBox(height: 20,),
+                        Center(child: Text("Additional note on last checkin", style: CustomTextStyles.regularText(context),)),
+                        const SizedBox(height: 5,),
+                        Center(
+                          child: Container(
+                            width: width * 0.7,
+                            decoration: CustomDecorations.standardBoxDecoration(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text(
+                                  lastCheckin.signature.toString(), style: CustomTextStyles.regularText(context),
+                                ),
+                              ),
+                            )
+                          ),
+                        ),
+                        const SizedBox(height: 20,),
+                        Center(child: Text("Check-out note", style: CustomTextStyles.regularText(context),)),
+                        const SizedBox(height: 5,),
+                        Center(
+                          child: SizedBox(
+                            width: width * 0.7,
+                            child: TextFormField(
+                              controller: additionalFields,
+                              autocorrect: false,
+                              minLines: 5,
+                              maxLines: 12,
+                              cursorColor: CustomColors().primaryColor,
+                              style: CustomTextStyles.regularText(context),
+                              decoration: CustomDecorations.inputDecoration(),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height:20),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30, bottom: 15),
+                          child: InkWell(onTap: notCompleted() ? null : () {
+                            setState(() {
+                              context.loaderOverlay.show();
+                              sendData();
+                            });
+                          }, child: Container(
+                              width: width * 0.6,
+                              height: height * 0.08,
+                              decoration: notCompleted() ? CustomDecorations.buttonDisabledBoxDecoration() : CustomDecorations.buttonBoxDecoration(),
+                              child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "FINISH",
+                                        style: CustomTextStyles.buttonText(context),
+                                      ),
+                                    ],
+                                  )
+                              )
+                          )),
+                        ),
+                      ],
+                    ),);
                   }
 
                   return const SizedBox();
@@ -922,11 +1046,16 @@ class _WidgetCheckProcedureState extends State<WidgetCheckProcedure> {
     check.email =  (await getAccount()).name.toString();
     check.isSkipper = true;
 
+    if(widget.checkIn){
+      check.signature = additionalFields.text;
+    }
+
     bool success = await postCheckModel(context, check, widget.checkIn);
 
     if(success){
-      GlobalSnackBar.show(context, "Completed cleaning for " + widget.yacht.name.toString());
+      GlobalSnackBar.show(context, "Completed CHECK IN/OUT for " + widget.yacht.name.toString());
     }
+    context.loaderOverlay.hide();
     Navigator.pop(context);
   }
 

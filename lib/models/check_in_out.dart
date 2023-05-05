@@ -63,6 +63,8 @@ class CheckInOut {
     data['issues'] = this.issues;
     data['document'] = this.document;
     data['isSkipper'] = this.isSkipper;
+    data['email'] = this.email;
+    data['signature'] = this.signature;
 
     return data;
   }
@@ -187,6 +189,16 @@ class CheckInOut {
 
 
     row = row + 2;
+    Range rowRange = sheet.getRangeByName('A$row:I$row');
+    rowRange.merge();
+    if(check_in){
+      rowRange.text = signature;
+    }
+
+    row = row + 2;
+    rowRange = sheet.getRangeByName('A$row:I$row');
+    rowRange.merge();
+    rowRange.text = "SAILOR: $email";
 
     final List<int> bytes = workbook.saveAsStream();
     workbook.dispose();

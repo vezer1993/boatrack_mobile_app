@@ -1,7 +1,9 @@
+import 'package:boatrack_mobile_app/models/board_task.dart';
 import 'package:boatrack_mobile_app/models/employeeTask.dart';
 import 'package:boatrack_mobile_app/resources/styles/box_decorations.dart';
 import 'package:boatrack_mobile_app/resources/styles/text_styles.dart';
 import 'package:boatrack_mobile_app/services/api/api_account.dart';
+import 'package:boatrack_mobile_app/widgets/settings/widget_board_task_group.dart';
 import 'package:boatrack_mobile_app/widgets/settings/widget_task_group.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +18,7 @@ class WidgetSettings extends StatefulWidget {
 
 class _WidgetSettingsState extends State<WidgetSettings> {
   late List<EmployeeTask> futureData;
+  late List<BoardTask> boardTasks;
   bool dataLoaded = false;
 
   List<EmployeeTask> cleaningTasks = [];
@@ -44,6 +47,7 @@ class _WidgetSettingsState extends State<WidgetSettings> {
           postCheckoutTasks.add(task);
         }
       }
+      boardTasks = await getBoardTasks(context);
       dataLoaded = true;
     }
     return futureData;
@@ -66,18 +70,21 @@ class _WidgetSettingsState extends State<WidgetSettings> {
                 return const Center(child: CircularProgressIndicator());
               } else {
 
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 30,),
-                    Center(child: Text("TASK LIST", style: CustomTextStyles.headerText(context),),),
-                    Visibility(visible: checkinTasks.isNotEmpty, child: TaskGroup(tasks:checkinTasks, title: "CHECK INs", icon: Icons.double_arrow_outlined, )),
-                    Visibility(visible: checkoutTasks.isNotEmpty, child: TaskGroup(tasks:checkoutTasks, title: "CHECK OUTs", icon: Icons.subdirectory_arrow_left_outlined,)),
-                    Visibility(visible: cleaningTasks.isNotEmpty, child: TaskGroup(tasks:cleaningTasks, title: "CLEANING", icon: Icons.cleaning_services,)),
-                    Visibility(visible: preCheckinTasks.isNotEmpty, child: TaskGroup(tasks:preCheckinTasks, title: "PRE CHECK IN PREPs", icon: Icons.keyboard_double_arrow_down_outlined, )),
-                    Visibility(visible: postCheckoutTasks.isNotEmpty, child: TaskGroup(tasks:postCheckoutTasks, title: "POST CHECKOUT PREPs", icon: Icons.keyboard_double_arrow_up_outlined, )),
-                  ],
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 30,),
+                      Center(child: Text("TASK LIST", style: CustomTextStyles.headerText(context),),),
+                      Visibility(visible: checkinTasks.isNotEmpty, child: TaskGroup(tasks:checkinTasks, title: "CHECK INs", icon: Icons.double_arrow_outlined, )),
+                      Visibility(visible: checkoutTasks.isNotEmpty, child: TaskGroup(tasks:checkoutTasks, title: "CHECK OUTs", icon: Icons.subdirectory_arrow_left_outlined,)),
+                      Visibility(visible: cleaningTasks.isNotEmpty, child: TaskGroup(tasks:cleaningTasks, title: "CLEANING", icon: Icons.cleaning_services,)),
+                      Visibility(visible: preCheckinTasks.isNotEmpty, child: TaskGroup(tasks:preCheckinTasks, title: "PRE CHECK IN PREPs", icon: Icons.keyboard_double_arrow_down_outlined, )),
+                      Visibility(visible: postCheckoutTasks.isNotEmpty, child: TaskGroup(tasks:postCheckoutTasks, title: "POST CHECKOUT PREPs", icon: Icons.keyboard_double_arrow_up_outlined, )),
+                      Visibility(visible: boardTasks.isNotEmpty, child: BoardTaskGroup(tasks: boardTasks),)
+                    ],
+                  ),
                 );
 
                /* return ListView.builder(

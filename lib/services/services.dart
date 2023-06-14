@@ -43,6 +43,15 @@ Future putResponse(String path, var body, BuildContext context) async {
   return response;
 }
 
+Future putResponseNoMessage(String path, Map<String, String> param) async {
+  var client = http.Client();
+  path = STRINGS_API.api_version.toString() + path.toString();
+  var url = Uri.https(STRINGS_API.api_root.toString(), path.toString(), param);
+  var response = await client.put(url, headers: await createHeaders());
+
+  return response;
+}
+
 Future putResponseNoBody(String path, BuildContext context) async {
   context.loaderOverlay.show();
   var client = http.Client();

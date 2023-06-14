@@ -3,10 +3,19 @@ import 'package:boatrack_mobile_app/pages/login.dart';
 import 'package:boatrack_mobile_app/resources/colors.dart';
 import 'package:boatrack_mobile_app/resources/storage/prefferences.dart';
 import 'package:boatrack_mobile_app/resources/strings/strings_prefferences.dart';
+import 'package:boatrack_mobile_app/services/api/api_firebase.dart';
+import 'package:boatrack_mobile_app/services/push_notifications.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FirebaseApi().initNotifications();
   runApp(const MyApp());
 }
 
@@ -48,6 +57,13 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+
+  @override
+  void initState(){
+    super.initState();
+    PushNotifications.initialize(flutterLocalNotificationsPlugin);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

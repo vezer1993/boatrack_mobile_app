@@ -37,3 +37,13 @@ Future getBoardTasks(BuildContext context) async {
 
   return list;
 }
+
+Future postTask(int id, BuildContext context) async {
+  var response = await putResponseNoBody("/BoardTasks/$id" , context) as http.Response;
+
+  if(response.statusCode.toString().startsWith("2")){
+    return true;
+  }else{
+    return false;
+  }
+}

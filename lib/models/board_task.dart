@@ -1,4 +1,5 @@
 class BoardTask {
+  int? taskID;
   int? accountId;
   int? charterId;
   String? task;
@@ -15,6 +16,7 @@ class BoardTask {
         this.resolved});
 
   BoardTask.fromJson(Map<String, dynamic> json) {
+    taskID = json['id'];
     accountId = json['accountId'];
     charterId = json['charterId'];
     task = json['task'];

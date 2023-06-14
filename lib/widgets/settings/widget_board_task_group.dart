@@ -7,7 +7,8 @@ import '../../resources/styles/text_styles.dart';
 
 class BoardTaskGroup extends StatefulWidget {
   final List<BoardTask> tasks;
-  const BoardTaskGroup({Key? key, required this.tasks}) : super(key: key);
+  final Function callback;
+  const BoardTaskGroup({Key? key, required this.tasks, required this.callback}) : super(key: key);
 
   @override
   State<BoardTaskGroup> createState() => _BoardTaskGroupState();
@@ -38,7 +39,7 @@ class _BoardTaskGroupState extends State<BoardTaskGroup> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               for(BoardTask task in widget.tasks)
-                BoardTaskWidget(task: task)
+                BoardTaskWidget(task: task,  callback: widget.callback,)
             ],
           ),
         )

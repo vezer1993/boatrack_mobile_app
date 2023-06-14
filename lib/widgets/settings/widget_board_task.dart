@@ -6,10 +6,12 @@ import '../../helper/conversion.dart';
 import '../../resources/colors.dart';
 import '../../resources/styles/box_decorations.dart';
 import '../../resources/styles/text_styles.dart';
+import '../../services/api/api_account.dart';
 
 class BoardTaskWidget extends StatefulWidget {
   final BoardTask task;
-  const BoardTaskWidget({Key? key, required this.task}) : super(key: key);
+  final Function callback;
+  const BoardTaskWidget({Key? key, required this.task, required this.callback}) : super(key: key);
 
   @override
   State<BoardTaskWidget> createState() => _BoardTaskWidgetState();
@@ -40,7 +42,8 @@ class _BoardTaskWidgetState extends State<BoardTaskWidget> {
       child: InkWell(
         onTap: () async {
           if (await confirm(context)) {
-          return print('pressedOK');
+            await postTask(widget.task.taskID!, context);
+            widget.callback();
           }
           return print('pressedCancel');
         },

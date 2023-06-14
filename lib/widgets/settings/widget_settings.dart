@@ -82,7 +82,7 @@ class _WidgetSettingsState extends State<WidgetSettings> {
                       Visibility(visible: cleaningTasks.isNotEmpty, child: TaskGroup(tasks:cleaningTasks, title: "CLEANING", icon: Icons.cleaning_services,)),
                       Visibility(visible: preCheckinTasks.isNotEmpty, child: TaskGroup(tasks:preCheckinTasks, title: "PRE CHECK IN PREPs", icon: Icons.keyboard_double_arrow_down_outlined, )),
                       Visibility(visible: postCheckoutTasks.isNotEmpty, child: TaskGroup(tasks:postCheckoutTasks, title: "POST CHECKOUT PREPs", icon: Icons.keyboard_double_arrow_up_outlined, )),
-                      Visibility(visible: boardTasks.isNotEmpty, child: BoardTaskGroup(tasks: boardTasks),)
+                      Visibility(visible: boardTasks.isNotEmpty, child: BoardTaskGroup(tasks: boardTasks, callback: refreshBoardTasks),)
                     ],
                   ),
                 );
@@ -125,5 +125,12 @@ class _WidgetSettingsState extends State<WidgetSettings> {
                 ); */
               }
             }));
+  }
+
+  void refreshBoardTasks(){
+    print("HELLO");
+    setState(() {
+      dataLoaded = false;
+    });
   }
 }

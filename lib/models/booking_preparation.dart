@@ -17,8 +17,8 @@ class BookingPreparation {
     checkIn =
     json['checkin'] != null ? CheckInOut.fromJson(json['checkin']) : null;
     checkOut = json['checkout'] != null ? CheckInOut.fromJson(json['checkout']) : null;
-    preCheckinPrep = json['precheckin'] != null ? PrepObject.fromJson(json['precheckin']) : null;
-    postCheckoutPrep = json['postcheckout'] != null ? PrepObject.fromJson(json['postcheckout']) : null;
+    preCheckinPrep = json['preCheckinPrep'] != null ? PrepObject.fromJson(json['preCheckinPrep']) : null;
+    postCheckoutPrep = json['postCheckoutPrep'] != null ? PrepObject.fromJson(json['postCheckoutPrep']) : null;
     cleaning = json['cleaning'] != null ? Cleaning.fromJson(json['cleaning']) : null;
     if(json['guestsArrived'] != null){
       guestsArrived = json['guestsArrived'];
